@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+	<!--数据存储位置 -->
+	<diskStore path="C:\\Users\\AdministratorDesktop\\demo\\cache" />
+
+	<!-- Mandatory Default Cache configuration. These settings will be applied 
+		to caches created programmtically using CacheManager.add(String cacheName) -->
+
+	<!-- 关于时间的数字单位(s)
+	 maxElementsInMemory 内存中最多允许保存的数据对象的数量
+	 maxElementsOnDisk 在磁盘上缓存的element的最大数目，默认值为0，表示不限制。 
+	 external 缓存中对象是否为永久的，如果是，超时设置将被忽略，对象从不过期;如果为false那么还要根据timeToIdleSeconds，timeToLiveSeconds判断 
+	 timeToIdleSeconds 对象空闲时间，指对象在多长时间没有被访问就会失效。 默认值0，表示一直可以访问。 
+	 timeToLiveSeconds 对象存活时间，指对象从创建到失效所需要的时间。默认值0，表示一直可以访问。 
+	 overflowToDisk 内存不足时，是否启用磁盘缓存 
+	 diskPersistent 是否在磁盘上持久化。指重启jvm后，数据是否有效。默认为false。 diskExpiryThreadIntervalSeconds： 对象检测线程运行时间间隔。标识对象状态的线程多长时间运行一次。 
+	 diskSpoolBufferSizeMB： DiskStore使用的磁盘大小，默认值30MB。每个cache使用各自的DiskStore。 
+	 memoryStoreEvictionPolicy 内存不足时数据对象的清除策略 ,默认值LRU 
+	 		ehcache中缓存的3种清空策略： 
+	 		FIFO(first in first out):先进先出 
+	 		LFU( Less Frequently Used):一直以来最少被使用的。如上面所讲，缓存的元素有一个hit属性，hit值最小的将会被清出缓存。 
+	 		LRU(Least Recently Used):最近最少使用的，缓存的元素有一个时间戳，当缓存容量满了，而又需要腾出地方来缓存新的元素的时候，那么现有缓存元素中时间戳离当前时间最远的元素将被清出缓存。 -->
+	<!--默认cache -->
+	<defaultCache maxElementsInMemory="1000"
+		maxElementsOnDisk="10000000" eternal="false" timeToIdleSeconds="120"
+		timeToLiveSeconds="120" diskPersistent="false" overflowToDisk="true"
+		diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU">
+	</defaultCache>
+
+	<!--hibernate 默认缓存-->
+	<cache name="org.hibernate.cache.spi.UpdateTimestampsCache"
+		maxElementsInMemory="5000" eternal="true" overflowToDisk="true" />
+	<cache name="org.hibernate.cache.internal.StandardQueryCache"
+		maxElementsInMemory="10000" eternal="false" timeToLiveSeconds="120"
+		overflowToDisk="true" />
+
+
+	<!-- cache缓存 -->
+	<cache name="userCache" maxElementsInMemory="10000" eternal="false"
+		timeToLiveSeconds="60" overflowToDisk="false" maxElementsOnDisk="0"
+		diskPersistent="false" diskExpiryThreadIntervalSeconds="240"
+		memoryStoreEvictionPolicy="LRU" />
+</ehcache>

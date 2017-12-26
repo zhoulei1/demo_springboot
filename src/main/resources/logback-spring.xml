@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!--转换器 -->
+	<conversionRule conversionWord="clr"
+		converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+	<conversionRule conversionWord="wex"
+		converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+	<conversionRule conversionWord="wEx"
+		converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+
+	<!--定义 输出日志格式 
+	参考 https://logback.qos.ch/manual/layouts.html
+	-->
+	<property name="CONSOLE_LOG_PATTERN"
+		value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}" />
+	<property name="FILE_LOG_PATTERN"
+		value="${FILE_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}" />
+
+	<!--读取配置文件的值 -->
+	<springProperty scope="context" name="LOG_ERROR" source="log.error" />
+	<springProperty scope="context" name="LOG_INFO" source="log.info" />
+
+	<!--参考文档 https://logback.qos.ch/manual/appenders.html -->
+
+	<!--ERROR appender -->
+	<appender name="ERROR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--日志名称 -->
+		<file>${LOG_ERROR}.log</file>
+		<!--rollover策略 -->
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<!-- rollover命名策略:每个小时roll一次 -->
+			<fileNamePattern>${LOG_ERROR}-%d{yyyy-MM-dd_HH}-%i.log.zip
+			</fileNamePattern>
+			<!--每个日志文件不超过100mb -->
+			<maxFileSize>100MB</maxFileSize>
+			<!--只保存近720个小时的日志(720小时之前的日志异步删除) -->
+			<maxHistory>720</maxHistory>
+			<!--总日志文件大小不超过20GB -->
+			<totalSizeCap>20GB</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${FILE_LOG_PATTERN}</pattern>
+			<charset>utf8</charset>
+		</encoder>
+		<!--拦截器 -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		
+		<!--optional-->
+		<!--是否追加default true-->
+		<append>true</append>
+		<!--严格模式(多jvm保证安全写入) default false-->
+		<prudent>false</prudent>
+	</appender>
+
+	<!--INFO appender -->
+	<appender name="INFO"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--日志名称 -->
+		<file>${LOG_INFO}.log</file>
+		<!--rollover策略 -->
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<!-- rollover命名策略:每个小时roll一次 -->
+			<fileNamePattern>${LOG_INFO}-%d{yyyy-MM-dd_HH}-%i.log.zip
+			</fileNamePattern>
+			<!--每个日志文件不超过100mb -->
+			<maxFileSize>100MB</maxFileSize>
+			<!--只保存近720个小时的日志(720小时之前的日志异步删除) -->
+			<maxHistory>720</maxHistory>
+			<!--总日志文件大小不超过20GB -->
+			<totalSizeCap>20GB</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${FILE_LOG_PATTERN}</pattern>
+			<charset>utf8</charset>
+		</encoder>
+		<!--拦截器 -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>utf8</charset>
+		</encoder>
+	</appender>
+
+	<root level="INFO">
+		<appender-ref ref="CONSOLE" />
+	</root>
+
+</configuration> 
+  

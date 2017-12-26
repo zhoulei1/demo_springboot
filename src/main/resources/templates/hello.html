@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<title>Hello World!</title>
+</head>
+<body>
+	<h1>Hello world!</h1>
+	<div sec:authorize="hasRole('admin')">
+		
+		<p>i am admin</p>
+	</div>
+	<div sec:authorize="hasRole('user')">
+		<p>i am user</p>
+	</div>
+</body>
+</html>
