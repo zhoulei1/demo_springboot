@@ -1,6 +1,9 @@
 package com.example.demo.controller;
 
-import javax.annotation.security.RolesAllowed;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,8 +23,8 @@ import io.swagger.annotations.ApiOperation;
 
 @Controller 
 @RequestMapping
-@Api(tags="b",description="a")
-public class HelloController2 {
+@Api(tags="test",description="hello test")
+public class HelloController {
 
 	@Autowired
 	UserService userService;
@@ -57,5 +60,23 @@ public class HelloController2 {
 	public User say(String name) {
 		return userService.findByUsername(name);
 	}
+	
+	@RequestMapping(value = "/download")
+	@ResponseBody
+	public void download(HttpServletResponse response) {
+		response.setContentType("application/octet-stream");
+		response.addHeader("Content-Disposition",
+				"attachment;filename=222.txt");
+		response.setCharacterEncoding("UTF-8");
+		try {
+			PrintWriter writer = response.getWriter();
+			writer.write("我爱中国");
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 }

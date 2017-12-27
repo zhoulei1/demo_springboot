@@ -16,9 +16,6 @@ import org.springframework.security.access.SecurityConfig;
 import org.thymeleaf.util.MapUtils;
 import org.thymeleaf.util.StringUtils;
 
-/**
- * Created by liyd on 16/12/9.
- */
 public class CustomSecurityContext {
 
 
