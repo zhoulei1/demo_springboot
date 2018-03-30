@@ -9,9 +9,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@DynamicInsert
+@DynamicUpdate
 public class Role {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

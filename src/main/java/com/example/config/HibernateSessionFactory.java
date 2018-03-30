@@ -1,20 +1,15 @@
 package com.example.config;
 
-import javax.persistence.EntityManager;
-
-import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
+import org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
@@ -50,6 +45,10 @@ public class HibernateSessionFactory {
 		sessionFactory.setDataSource(datasourceConfig.getDataSource());
 		sessionFactory.setPackagesToScan(new String[] { "com.example.model" });
 		sessionFactory.setHibernateProperties(hibernate.getProperties());
+		//逻辑名(如处理分组命名等)
+	    sessionFactory.setImplicitNamingStrategy(new SpringImplicitNamingStrategy());
+	    //物理名(如驼峰改_)
+	    sessionFactory.setPhysicalNamingStrategy(new SpringPhysicalNamingStrategy());
 		return sessionFactory;
 	}
 
@@ -62,7 +61,7 @@ public class HibernateSessionFactory {
 	@Bean(name = "hibernateTemplate")
 	public HibernateTemplate hibernateTemplate() {
 		HibernateTemplate hibernateTemplate = new HibernateTemplate();
-		//hibernateTemplate.setCacheQueries(true);是否开启查询缓存
+		//hibernateTemplate.setCacheQueries(true);//是否开启查询缓存
 		hibernateTemplate.setSessionFactory(sessionFactory().getObject());
 		return hibernateTemplate;
 	}
@@ -78,7 +77,7 @@ public class HibernateSessionFactory {
 	}
 
 	/*********** 自定义entitymanager ****************/
-    private HibernateJpaVendorAdapter vendorAdaptor() {
+/*    private HibernateJpaVendorAdapter vendorAdaptor() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(true);
         return vendorAdapter;
@@ -104,5 +103,5 @@ public class HibernateSessionFactory {
 	public JpaTransactionManager transactionManagerSecondary() {
 		return new JpaTransactionManager(entityFactory().getObject());
 	}
-
+*/
 }

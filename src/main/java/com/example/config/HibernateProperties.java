@@ -19,6 +19,7 @@ public class HibernateProperties {
 	private boolean use_scrollable_resultset;
 	private boolean use_query_cache;
 	private boolean use_second_level_cache;
+	private String hbm2ddl_auto;
 	private String factory_class;
 
 	private Properties properties = new Properties();
@@ -149,12 +150,25 @@ public class HibernateProperties {
 
 
 
+	public String getHbm2ddl_auto() {
+		return hbm2ddl_auto;
+	}
+
+
+
+	public void setHbm2ddl_auto(String hbm2ddl_auto) {
+		this.hbm2ddl_auto = hbm2ddl_auto;
+	}
+
+
+
 	public Properties getProperties() {
 		if (properties.isEmpty()) {
 			properties.setProperty("hibernate.dialect", dialect);
 			properties.setProperty("hibernate.show_sql", String.valueOf(show_sql));
 			properties.setProperty("hibernate.format_sql", String.valueOf(format_sql));
 			properties.setProperty("hibernate.use_sql_comments", String.valueOf(use_sql_comments));
+			properties.setProperty("hibernate.hbm2ddl.auto", String.valueOf(hbm2ddl_auto));
 			//properties.setProperty("hibernate.jdbc_use_scrollable_resultset", String.valueOf(fetch_size));
 			//properties.setProperty("hibernate.jdbc_batch_size", String.valueOf(batch_size));
 			//properties.setProperty("hibernate.jdbc.use_scrollable_resultset", String.valueOf(use_scrollable_resultset));
